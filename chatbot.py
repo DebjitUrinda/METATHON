@@ -83,6 +83,7 @@ while(flag==True):
             else:
                 print("ROBO: ",end="")
                 print(response(user_response))
+                print(type(response))
                 sent_tokens.remove(user_response)
     else:
         flag=False

@@ -1,32 +1,21 @@
-ritm
-access required for project.
+We are raising a RITM: access required for project.
 
-ritm
-access request.
+We are raising a RITM: access request.
 
-inc
-vdi not opening.
+We are raising an INC: vdi not opening.
 
-inc
-vdi not responding.
+We are raising an INC: vdi not responding.
 
-inc
-vdi is slow.
+We are raising an INC: vdi is slow.
 
-inc
-vdi is not working.
+We are raising an INC: vdi is not working.
 
-inc
-application not opening.
+We are raising an INC: application not opening.
 
-inc
-application not responding.
+We are raising an INC: application not responding.
 
-inc
-application is slow.
+We are raising an INC: application is slow.
 
-inc
-application not working.
+We are raising an INC: application not working.
 
-chg
-emergency change request.
+We are raising a CHG: emergency change request.
