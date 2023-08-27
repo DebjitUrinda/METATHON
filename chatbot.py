@@ -65,6 +65,7 @@ def response(user_response):
         return robo_response
     else:
         robo_response = robo_response+sent_tokens[idx]
+        # print(type(robo_response))
         return robo_response
 
 
@@ -83,7 +84,7 @@ while(flag==True):
             else:
                 print("ROBO: ",end="")
                 print(response(user_response))
-                print(type(response))
+                # print(type(response))
                 sent_tokens.remove(user_response)
     else:
         flag=False
