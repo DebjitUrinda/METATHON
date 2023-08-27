@@ -89,15 +89,6 @@ def INC():
 def CHG():
     return "CHG yet to be done"
 
-# def display_menu():
-#     print("Helpline Options:")
-#     helpline_options = {
-#         "1.":"RITM",
-#         "2.":"INC",
-#         "3.":"CHG"
-#     }
-#     for option, description in helpline_options.items():
-#         print(f"{option}. {description}")
 
 def Login():
     try:
@@ -146,22 +137,6 @@ def main():
                 flag=False
                 print("ROBO: Bye! take care..")
                 break
-
-    #     while True:
-    #         user_input = input("You: ")
-    #         if user_input.lower() == "bye":
-    #             print("Chatbot: Goodbye!")
-    #             break
-    #         if user_input.lower() == "menu":
-    #             display_menu()
-    #             input_item = int(input("Chatbot: Enter the option u want to choose from above list:"))
-    #             print(call_to_service_now(input_item))
-    #             continue
-    #         response = chatbot_response(user_input)
-    #         print("Chatbot:", response)
-    # else:
-    #     print("Please fill the above data")
-
 
 if __name__ == "__main__":
     main()
