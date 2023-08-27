@@ -1,9 +1,8 @@
-
-#Meet Robo: your friend
-
-#import necessary libraries
-import io
+import pandas as pd
 import random
+import incident
+import login
+
 import string # to process standard python strings
 import warnings
 import numpy as np
@@ -67,28 +66,58 @@ def response(user_response):
         robo_response = robo_response+sent_tokens[idx]
         # print(type(robo_response))
         return robo_response
+    
+
+# Calling service_now through functions
+def call_to_service_now(argument):
+    switcher = {
+        RITM: RITM(),
+        INC: INC(),
+        CHG: CHG(),
+    }
+    return switcher.get(argument, "nothing")
+
+# function for RITM
+def RITM():
+    return "RITM yet to be done"
+
+# function for INC
+def INC():
+    # var = incident.Incident()
+    print(incident.Incident()) 
+
+# function for CHG
+def CHG():
+    return "CHG yet to be done"
 
 
-flag=True
-print("ROBO: My name is Robo. I will answer your queries about Chatbots. If you want to exit, type Bye!")
-while(flag==True):
-    user_response = input()
-    user_response=user_response.lower()
-    if(user_response!='bye'):
-        if(user_response=='thanks' or user_response=='thank you' ):
-            flag=False
-            print("ROBO: You are welcome..")
-        else:
-            if(greeting(user_response)!=None):
-                print("ROBO: "+greeting(user_response))
+def main():
+    x = login.Login()
+    if (x == 1):
+        print("ROBO: My name is Robo. I will answer your queries about Chatbots. If you want to exit, type Bye!")
+        while(True):
+            user_response = input("You: ")
+            user_response=user_response.lower()
+            if(user_response!='bye'):
+                if(user_response=='thanks' or user_response=='thank you' ):
+                    flag=False
+                    print("ROBO: You are welcome..")
+                else:
+                    if(greeting(user_response)!=None):
+                        print("ROBO: "+greeting(user_response))
+                    else:
+                        print("ROBO: ",end="")
+                        console_op = response(user_response)
+                        console_list = console_op.split(":")
+                        # print(console_list)
+                        call_to_service_now(console_list[0].split(" ")[-1].upper)
+                        print(console_op)                        
+                        # print(type(response))
+                        sent_tokens.remove(user_response)
             else:
-                print("ROBO: ",end="")
-                print(response(user_response))
-                # print(type(response))
-                sent_tokens.remove(user_response)
-    else:
-        flag=False
-        print("ROBO: Bye! take care..")    
-        
-        
+                flag=False
+                print("ROBO: Bye! take care..")
+                break
 
+if __name__ == "__main__":
+    main()
