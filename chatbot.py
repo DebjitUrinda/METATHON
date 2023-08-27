@@ -22,7 +22,7 @@ nltk.download('popular', quiet=True) # for downloading packages
 
 
 #Reading in the corpus
-with open('chatbot.txt','r', encoding='utf8', errors ='ignore') as fin:
+with open('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/chatbot.txt','r', encoding='utf8', errors ='ignore') as fin:
     raw = fin.read().lower()
 
 #TOkenisation
