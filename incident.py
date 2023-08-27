@@ -1,7 +1,7 @@
 import requests
 
 # ServiceNow API endpoint and credentials
-def INCident():
+def Incident():
     url = "https://dev78375.service-now.com/api/now/table/incident"
 
     username = "admin"
@@ -25,7 +25,6 @@ def INCident():
     # Check response
     if response.status_code == 201:
         #print("Incident created successfully!" + response.json())
-        return response.json()
+        return response.json().get("result").get("number")
     else:
-
         return response.text

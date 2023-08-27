@@ -2,63 +2,102 @@ import pandas as pd
 import random
 import incident
 
-# Create an empty DataFrame to store login details
+import string # to process standard python strings
+import warnings
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import warnings
+warnings.filterwarnings('ignore')
 
-# Define chatbot responses
-responses = {
+import nltk
+from nltk.stem import WordNetLemmatizer
+nltk.download('popular', quiet=True) # for downloading packages
 
-    "hello": ["Hi there!", "Hello!", "Hey!"],
+# uncomment the following only the first time
+#nltk.download('punkt') # first-time use only
+#nltk.download('wordnet') # first-time use only
 
-    "how are you": ["I'm just a bot, but I'm here to help!", "I'm good, thanks for asking!",
-                    "I don't have feelings, but I'm ready to assist!"],
 
-    "bye": ["Goodbye!", "See you later!", "Bye bye!"],
+#Reading in the corpus
+with open('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/chatbot.txt','r', encoding='utf8', errors ='ignore') as fin:
+    raw = fin.read().lower()
 
-    "default": ["I'm not sure I understand.", "Could you please rephrase that?",
-                "I'm still learning, can you try something else?"]
+#TOkenisation
+sent_tokens = nltk.sent_tokenize(raw)# converts to list of sentences 
+word_tokens = nltk.word_tokenize(raw)# converts to list of words
 
-}
+# Preprocessing
+lemmer = WordNetLemmatizer()
+def LemTokens(tokens):
+    return [lemmer.lemmatize(token) for token in tokens]
+remove_punct_dict = dict((ord(punct), None) for punct in string.punctuation)
+def LemNormalize(text):
+    return LemTokens(nltk.word_tokenize(text.lower().translate(remove_punct_dict)))
 
-# Define helpline options
-helpline_options = {
-    "1": "RITM",
-    "2": "INC",
-    "3": "CHG"
-}
 
+# Keyword Matching
+GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up","hey",)
+GREETING_RESPONSES = ["hi", "hey", "*nods*", "hi there", "hello", "I am glad! You are talking to me"]
+
+def greeting(sentence):
+    """If user's input is a greeting, return a greeting response"""
+    for word in sentence.split():
+        if word.lower() in GREETING_INPUTS:
+            return random.choice(GREETING_RESPONSES)
+
+
+# Generating response
+def response(user_response):
+    robo_response=''
+    sent_tokens.append(user_response)
+    TfidfVec = TfidfVectorizer(tokenizer=LemNormalize, stop_words='english')
+    tfidf = TfidfVec.fit_transform(sent_tokens)
+    vals = cosine_similarity(tfidf[-1], tfidf)
+    idx=vals.argsort()[0][-2]
+    flat = vals.flatten()
+    flat.sort()
+    req_tfidf = flat[-2]
+    if(req_tfidf==0):
+        robo_response=robo_response+"I am sorry! I don't understand you"
+        return robo_response
+    else:
+        robo_response = robo_response+sent_tokens[idx]
+        # print(type(robo_response))
+        return robo_response
+    
 
 # Calling service_now through functions
 def call_to_service_now(argument):
     switcher = {
-        1: RITM(),
-        2: INC(),
-        3: CHG(),
+        RITM: RITM(),
+        INC: INC(),
+        CHG: CHG(),
     }
     return switcher.get(argument, "nothing")
 
 # function for RITM
 def RITM():
-    return 1 + 2
+    return "RITM yet to be done"
 
 # function for INC
 def INC():
-    var = incident.INCident()
-    return var.get("result").get("number")
+    # var = incident.Incident()
+    return incident.Incident()
 
 # function for CHG
 def CHG():
-    return "yet to be done"
+    return "CHG yet to be done"
 
-def chatbot_response(user_input):
-    user_input = user_input.lower()
-    if user_input in responses:
-        return random.choice(responses[user_input])
-    else:
-        return random.choice(responses["default"])
-def display_menu():
-    print("Helpline Options:")
-    for option, description in helpline_options.items():
-        print(f"{option}. {description}")
+# def display_menu():
+#     print("Helpline Options:")
+#     helpline_options = {
+#         "1.":"RITM",
+#         "2.":"INC",
+#         "3.":"CHG"
+#     }
+#     for option, description in helpline_options.items():
+#         print(f"{option}. {description}")
 
 def Login():
     try:
@@ -75,27 +114,53 @@ def Login():
     new_login_data = pd.DataFrame({'Employee_ID': [ID], 'Username': [username], 'Password': [password]})
     login_data = pd.concat([login_data, new_login_data], ignore_index=True)
     # Save the DataFrame to an Excel file
-    login_data.to_excel('C:/Users/Siddhartha Sen/PycharmProjects/pythonProject/login_details.xlsx', index=False)
-    print("Login details saved successfully!")
+    login_data.to_excel('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/login_details.xlsx', index=False)
+    print("Login successful!")
     return 1
 
 def main():
     x = Login()
     if (x == 1):
-        while True:
-            user_input = input("You: ")
-            if user_input.lower() == "bye":
-                print("Chatbot: Goodbye!")
+        print("ROBO: My name is Robo. I will answer your queries about Chatbots. If you want to exit, type Bye!")
+        while(True):
+            user_response = input("You: ")
+            user_response=user_response.lower()
+            if(user_response!='bye'):
+                if(user_response=='thanks' or user_response=='thank you' ):
+                    flag=False
+                    print("ROBO: You are welcome..")
+                else:
+                    if(greeting(user_response)!=None):
+                        print("ROBO: "+greeting(user_response))
+                    else:
+                        print("ROBO: ",end="")
+                        console_op = response(user_response)
+                        console_list = console_op.split(":")
+                        # print(console_list)
+                        output = call_to_service_now(console_list[0].split(" ")[-1])
+                        print(console_op)
+                        print(output)
+                        # print(type(response))
+                        sent_tokens.remove(user_response)
+            else:
+                flag=False
+                print("ROBO: Bye! take care..")
                 break
-            if user_input.lower() == "menu":
-                display_menu()
-                input_item = int(input("Chatbot: Enter the option u want to choose from above list:"))
-                print(call_to_service_now(input_item))
-                continue
-            response = chatbot_response(user_input)
-            print("Chatbot:", response)
-    else:
-        print("Please fill the above data")
+
+    #     while True:
+    #         user_input = input("You: ")
+    #         if user_input.lower() == "bye":
+    #             print("Chatbot: Goodbye!")
+    #             break
+    #         if user_input.lower() == "menu":
+    #             display_menu()
+    #             input_item = int(input("Chatbot: Enter the option u want to choose from above list:"))
+    #             print(call_to_service_now(input_item))
+    #             continue
+    #         response = chatbot_response(user_input)
+    #         print("Chatbot:", response)
+    # else:
+    #     print("Please fill the above data")
 
 
 if __name__ == "__main__":
