@@ -83,7 +83,7 @@ def RITM():
 # function for INC
 def INC():
     # var = incident.Incident()
-    return incident.Incident()
+    print(incident.Incident()) 
 
 # function for CHG
 def CHG():
@@ -128,9 +128,8 @@ def main():
                         console_op = response(user_response)
                         console_list = console_op.split(":")
                         # print(console_list)
-                        output = call_to_service_now(console_list[0].split(" ")[-1])
-                        print(console_op)
-                        print(output)
+                        call_to_service_now(console_list[0].split(" ")[-1].upper)
+                        print(console_op)                        
                         # print(type(response))
                         sent_tokens.remove(user_response)
             else:
