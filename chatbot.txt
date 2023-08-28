@@ -1,21 +1,21 @@
-We are raising a RITM: access required for project.
+I have raised above RITM for: access required for project.
 
-We are raising a RITM: access request.
+I have raised above RITM for: access request.
 
-We are raising an INC: vdi not opening.
+I have raised above INC for: vdi not opening.
 
-We are raising an INC: vdi not responding.
+I have raised above INC for: vdi not responding.
 
-We are raising an INC: vdi is slow.
+I have raised above INC for: vdi is slow.
 
-We are raising an INC: vdi is not working.
+I have raised above INC for: vdi is not working.
 
-We are raising an INC: application not opening.
+I have raised above INC for: application not opening.
 
-We are raising an INC: application not responding.
+I have raised above INC for: application not responding.
 
-We are raising an INC: application is slow.
+I have raised above INC for: application is slow.
 
-We are raising an INC: application not working.
+I have raised above INC for: application not working.
 
-We are raising a CHG: emergency change request.
+I have created above CHG for: emergency change request.

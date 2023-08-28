@@ -2,6 +2,9 @@ import pandas as pd
 import random
 import incident
 import login
+import ritm
+import chg
+import feedback
 
 import string # to process standard python strings
 import warnings
@@ -70,16 +73,17 @@ def response(user_response):
 
 # Calling service_now through functions
 def call_to_service_now(argument):
+    print(argument)
     switcher = {
         RITM: RITM(),
         INC: INC(),
-        CHG: CHG(),
+        CHG: CHG()
     }
     return switcher.get(argument, "nothing")
 
 # function for RITM
 def RITM():
-    return "RITM yet to be done"
+    print(ritm.RITM())
 
 # function for INC
 def INC():
@@ -88,32 +92,39 @@ def INC():
 
 # function for CHG
 def CHG():
-    return "CHG yet to be done"
+    print(chg.Change())
 
 
 def main():
     x = login.Login()
     if (x == 1):
-        print("ROBO: My name is Robo. I will answer your queries about Chatbots. If you want to exit, type Bye!")
+        print("ROBO: My name is Robo. I will help with your queries about VDI,account access etc.. If you want to exit, type Bye!")
         while(True):
-            user_response = input("You: ")
+            user_response = input("How may I help you: ")
             user_response=user_response.lower()
+            
+            if not user_response:  # Check for empty input
+                print("ROBO: Please provide a valid input.")
+                continue
+            
             if(user_response!='bye'):
                 if(user_response=='thanks' or user_response=='thank you' ):
                     flag=False
                     print("ROBO: You are welcome..")
+                elif greeting(user_response) is not None:
+                    print("ROBO: " + greeting(user_response))
                 else:
-                    if(greeting(user_response)!=None):
-                        print("ROBO: "+greeting(user_response))
+                    print("ROBO: ", end="")
+                    console_op = response(user_response)
+                    console_list = console_op.split(":")
+                    if len(console_list) > 1 and console_list[0].split(" ")[-2].upper() in ["RITM", "INC", "CHG"]:
+                        print(console_list[0].split(" ")[-2].upper())
+                        call_to_service_now(console_list[0].split(" ")[-2].upper())
+                        print(console_op)
+                        print(console_list)
                     else:
-                        print("ROBO: ",end="")
-                        console_op = response(user_response)
-                        console_list = console_op.split(":")
-                        # print(console_list)
-                        call_to_service_now(console_list[0].split(" ")[-1].upper)
-                        print(console_op)                        
-                        # print(type(response))
-                        sent_tokens.remove(user_response)
+                        print("I'm sorry, but I didn't understand that. Could you please rephrase?")
+                    sent_tokens.remove(user_response)
             else:
                 flag=False
                 print("ROBO: Bye! take care..")
