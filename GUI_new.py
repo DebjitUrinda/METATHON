@@ -12,9 +12,10 @@ from tkinter import messagebox
 import incident
 import pandas as pd
 import re
-#import ritm
-#import chg
-#import feedback
+import ritm
+import chg
+import feedback
+import os
 
 warnings.filterwarnings('ignore')
 
@@ -27,6 +28,20 @@ nltk.download('popular', quiet=True)  # for downloading packages
 # nltk.download('punkt') # first-time use only
 # nltk.download('wordnet') # first-time use only
 
+# Creating the corpus
+dataset = pd.read_excel('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/nlp_input.xlsx',sheet_name='nlp_input')
+dataset["User_Input"] = dataset["User_Input"].str.replace('.','')
+dataset["Robo_response"] = dataset['Robo_response'].str.replace('.','')
+delimiter = '.'  # Add '.' at the end
+dataset['Robo_response'] = dataset['Robo_response'] + delimiter
+file_name = 'chatbot.txt'   # Specify the file name
+if os.path.isfile(file_name):   # Check if the file already exists
+    try:
+        # remove the existing file
+        os.remove(file_name)
+    except Exception as e:
+        print(f"Error deleting the existing file: {e}")
+dataset.to_csv(file_name, sep=':', index=False, header=False)  # Write the DataFrame to a text file with .txt extension
 
 # Reading in the corpus
 with open('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/chatbot.txt', 'r', encoding='utf8',
@@ -63,34 +78,29 @@ def greeting(sentence):
 
 
 # Calling service_now through functions
-def call_to_service_now(argument):
+def call_to_service_now(user_argument,argument):
     func = argument
     if func == "RITM":
-        return RITM()
+        return RITM(user_argument)
     elif func == "INC":
-        return INC()
+        return INC(user_argument)
     elif func == "CHG":
-        return CHG()
-    else:
-        return "Sorry, I can only help you with INC/RITM/CHG as of now." + "\n" + "Our Team is working hard to incorporate more options. Thank you!!!"  # Call the selected function
-
+        return CHG(user_argument)
 
 # function for RITM
-def RITM():
-    robo_return = "ROBO: " #+ ritm.RITM()
+def RITM(ritm_argument):
+    robo_return = "ROBO: " + ritm.RITM(ritm_argument)
     return robo_return
-
 
 # function for INC
-def INC():
+def INC(inc_argument):
     # var = incident.Incident()
-    robo_return = "ROBO: " + incident.Incident()
+    robo_return = "ROBO: " + incident.Incident(inc_argument)
     return robo_return
 
-
 # function for CHG
-def CHG():
-    robo_return = "ROBO: " #+ chg.Change()
+def CHG(chg_argument):
+    robo_return = "ROBO: " + chg.Change(chg_argument)
     return robo_return
 
 
@@ -146,7 +156,6 @@ class LoginGUI:
 
 
 class LoginGUI_newUser:
-    # ... (other methods and initialization)
     def __init__(self, root):
         self.root = root
         self.root.title("New User Registration")
@@ -210,7 +219,6 @@ class LoginGUI_newUser:
 
     def launch_chatbot_gui_new_user(self):
         root = tk.Tk()
-        # login_gui =
         LoginGUI(root)
         root.mainloop()
 
@@ -240,26 +248,21 @@ class ChatbotGUI:
         user_response = user_message.lower()
         if not user_response:  # Check for empty input
             self.append_response("ROBO: Please provide a valid input.")
-            # continue
         elif user_response != "bye":
             if (user_response == 'thanks' or user_response == 'thank you'):
-                # flag=False
                 self.append_response("ROBO: You are welcome..")
                 self.root.destroy()
             elif greeting(user_response) is not None:
                 self.append_response("ROBO: " + greeting(user_response))
             else:
-                # print("ROBO: ", end="")
                 robo_response = self.generate_response(user_response)
                 console_list = robo_response.split(":")
-                if len(console_list) > 1 and console_list[0].split(" ")[-2].upper() in ["RITM", "INC", "CHG"]:
-                    self.append_response(console_list[0].split(" ")[-2].upper())
-                    robo_response = call_to_service_now(console_list[0].split(" ")[-2].upper())
+                if len(console_list) > 1 and console_list[1].upper() in ["RITM", "INC", "CHG"]:
+                    self.append_response(console_list[1].upper())
+                    robo_response = call_to_service_now(console_list[0],console_list[1].upper())
                     self.append_response(robo_response)
-                    # print(console_list)
                 else:
-                    # take the feedback here into an error file
-                    self.append_response("ROBO: ")# + feedback.feedback())
+                    self.append_response(("ROBO: ") + feedback.feedback())
                 sent_tokens.remove(user_response)
         else:
             self.append_response("ROBO: Bye! take care.. :)" + "\n" + "Hope to serve you better next time!!")
@@ -279,7 +282,6 @@ class ChatbotGUI:
         flat.sort()
         req_tfidf = flat[-2]
         if req_tfidf == 0:
-            # robo_response = robo_response + "I am sorry! I don't understand you"
             self.append_response("ROBO: " + "I am sorry! I don't understand you" + "\n" + "Could you please rephrase")
             return robo_response
         else:
@@ -298,7 +300,6 @@ class ChatbotGUI:
 
 def main():
     root = tk.Tk()
-    # login_gui =
     LoginGUI(root)
     root.mainloop()
 
