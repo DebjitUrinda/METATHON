@@ -78,29 +78,29 @@ def greeting(sentence):
 
 
 # Calling service_now through functions
-def call_to_service_now(user_argument,argument):
+def call_to_service_now(user_argument,argument,id):
     func = argument
     if func == "RITM":
-        return RITM(user_argument)
+        return RITM(user_argument,id)
     elif func == "INC":
-        return INC(user_argument)
+        return INC(user_argument,id)
     elif func == "CHG":
-        return CHG(user_argument)
+        return CHG(user_argument,id)
 
 # function for RITM
-def RITM(ritm_argument):
-    robo_return = "ROBO: " + ritm.RITM(ritm_argument)
+def RITM(ritm_argument,id):
+    robo_return = "ROBO: " + ritm.RITM(ritm_argument,id)
     return robo_return
 
 # function for INC
-def INC(inc_argument):
+def INC(inc_argument,id):
     # var = incident.Incident()
-    robo_return = "ROBO: " + incident.Incident(inc_argument)
+    robo_return = "ROBO: " + incident.Incident(inc_argument,id)
     return robo_return
 
 # function for CHG
-def CHG(chg_argument):
-    robo_return = "ROBO: " + chg.Change(chg_argument)
+def CHG(chg_argument,id):
+    robo_return = "ROBO: " + chg.Change(chg_argument,id)
     return robo_return
 
 
@@ -128,6 +128,8 @@ class LoginGUI:
         ID_pattern = r'[0-9]{2,}'
 
         Employee_ID = int(self.username_entry.get())  # Get Employee_ID from input field
+        global emp_id
+        emp_id = Employee_ID
 
         if re.search(str(ID_pattern), str(Employee_ID)):
             filtered = already_data[already_data['Employee_ID'] == Employee_ID]
@@ -259,7 +261,7 @@ class ChatbotGUI:
                 console_list = robo_response.split(":")
                 if len(console_list) > 1 and console_list[1].upper() in ["RITM", "INC", "CHG"]:
                     self.append_response(console_list[1].upper())
-                    robo_response = call_to_service_now(console_list[0],console_list[1].upper())
+                    robo_response = call_to_service_now(console_list[0],console_list[1].upper(),emp_id)
                     self.append_response(robo_response)
                 else:
                     self.append_response(("ROBO: ") + feedback.feedback())
