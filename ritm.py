@@ -29,6 +29,13 @@ def RITM():
     # Check response
     if response.status_code != 200:
         # print("RITM created successfully!")
-        return(response.json())
+        return(response.json().get('result').get('task_effective_number'))
     else:
         return(response.text)
+    
+def main():
+    result=RITM()
+    print(result)
+
+if __name__ == "__main__":
+    main()
