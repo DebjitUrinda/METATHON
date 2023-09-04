@@ -80,11 +80,11 @@ def greeting(sentence):
 # Calling service_now through functions
 def call_to_service_now(user_argument,argument,id):
     func = argument
-    if func == "RITM":
+    if func == "RITM.":
         return RITM(user_argument,id)
-    elif func == "INC":
+    elif func == "INC.":
         return INC(user_argument,id)
-    elif func == "CHG":
+    elif func == "CHG.":
         return CHG(user_argument,id)
 
 # function for RITM
@@ -259,9 +259,10 @@ class ChatbotGUI:
             else:
                 robo_response = self.generate_response(user_response)
                 console_list = robo_response.split(":")
-                if len(console_list) > 1 and console_list[1].upper() in ["RITM", "INC", "CHG"]:
+                console_out = console_list[1].upper()
+                if len(console_list) > 1 and console_out in ["RITM.", "INC.", "CHG."]:
                     self.append_response(console_list[1].upper())
-                    robo_response = call_to_service_now(console_list[0],console_list[1].upper(),emp_id)
+                    robo_response = call_to_service_now(console_list[0],console_out,emp_id)
                     self.append_response(robo_response)
                 else:
                     self.append_response(("ROBO: ") + feedback.feedback())

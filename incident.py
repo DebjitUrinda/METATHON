@@ -3,7 +3,7 @@ import pandas as pd
 
 # ServiceNow API endpoint and credentials
 def Incident(inc_argument,emp_id):
-    inc_df = pd.read_excel('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/RITM_INC_CHG-Details.xlsx',sheet_name='INC Sheet')
+    inc_df = pd.read_excel('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/RITM_INC_CHG-Details.xlsx',sheet_name='INC_Sheet')
     inc_df["Short_Description"] = inc_df["Short_Description"].str.replace('.','',regex=False)
     inc_df_unique = inc_df.drop_duplicates(subset=['Short_Description'])
     result_df = inc_df_unique.loc[inc_df_unique['Short_Description']==inc_argument]
