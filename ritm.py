@@ -1,23 +1,28 @@
 import requests
+import pandas as pd
 
 # ServiceNow API endpoint and credentials
 
-def RITM():
+def RITM(ritm_argument):
+    ritm_df = pd.read_excel('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/RITM_INC_CHG-Details.xlsx',sheet_name='RITM_Sheet')
+    ritm_df["User_Input"] = ritm_df["User_Input"].str.replace('.','',regex=False)
+    ritm_df_unique = ritm_df.drop_duplicates(subset=['User_Input'])
+    ritm_argument = ritm_argument.replace('.','')
+    result_df = ritm_df_unique.loc[ritm_df_unique['User_Input'].str.lower()==ritm_argument]
+
     url = "https://dev78375.service-now.com/api/now/table/sc_req_item"
     username = "admin"
     password = "9%3fWxi^LiWW"
    
     # JSON payload for creating an Incident
     ritm_payload = {
-    "configuration_item":"DP00288",
-    "assignment_group":"database",
-    "short_description":"RITM_testing",
-    "description":"RITM_testing",
-    "sys_created_by":"",
-    "contact_type": "",
-    "context": "ritm",
-    "cat_item": "Access",
-    "request": "REQ0010001",
+    "short_description": str(result_df['User_Input'].iloc[0]),
+    "description": str(result_df['Summary_of_Request'].iloc[0]),
+    # "sys_created_by":"",
+    # "contact_type": "",
+    "context": str(result_df['Domain'].iloc[0]),
+    "cat_item": str(result_df['Application_Name'].iloc[0]),
+    # "request": "REQ0010001",
     }  
    
     # Set up authentication
@@ -33,9 +38,9 @@ def RITM():
     else:
         return(response.text)
     
-def main():
-    result=RITM()
-    print(result)
+# def main():
+#     result=RITM("access request.")
+#     print(result)
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
