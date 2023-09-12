@@ -311,15 +311,16 @@ class ChatbotGUI:
             return robo_response
         else:
             # Set a similarity threshold (adjust this value as needed)
-            threshold = 0.5  # Adjust this threshold as per your requirement
+            threshold = 0.38  # Adjust this threshold as per your requirement
 
             # if user_similarity_scores[0][idx] >= threshold:
             for i in range(len(user_similarity_scores[0])):
                 if user_similarity_scores[0][i] >= threshold:
-                    robo_response = robo_response + sent_tokens[idx]
-                else:
-                    robo_response = robo_response + "I am not confident in my response."
-                return robo_response
+                    robo_response = robo_response + word_tokens[idx]
+                    break
+                # else:
+                #     robo_response = robo_response + "I am not confident in my response."
+            return robo_response
 
     def append_response(self, response):
         self.response_widget.config(state=tk.NORMAL)
