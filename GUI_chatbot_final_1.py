@@ -15,6 +15,7 @@ import re
 import ritm
 import chg
 import feedback
+import text_classification_tuned as td
 import os
 import requests
 
@@ -254,6 +255,7 @@ class ChatbotGUI:
     def send_message(self):
         user_message = self.input_entry.get()
         user_response=user_message.lower()
+        self.append_response("You: "+user_message)
         if not user_response:  # Check for empty input
                 self.append_response("ROBO: Please provide a valid input.")
                 # continue
@@ -266,16 +268,23 @@ class ChatbotGUI:
                 self.append_response("ROBO: " + greeting(user_response))
             else:
                 # print("ROBO: ", end="")
-                robo_response = self.generate_response(user_response)
-                console_list = robo_response.split(":")
-                if len(console_list) > 1 and console_list[0].upper() in ["RITM", "INC", "CHG"]:
-                    self.append_response(console_list[0].upper())
-                    robo_response = call_to_service_now(console_list[1],console_list[0].upper(),emp_id)
-                    self.append_response(robo_response)
-                    # print(console_list)
+                flag = td.class_return(user_message)
+                if flag:
+                    robo_response = self.generate_response(user_response)
+                    console_list = robo_response.split(":")
+                    print(console_list)
+                    if len(console_list) > 1 and console_list[0].upper() in ["RITM", "INC", "CHG"]:
+                        self.append_response(console_list[0].upper())
+                        robo_response = call_to_service_now(console_list[1],console_list[0].upper(),emp_id)
+                        self.append_response(robo_response)
+                        self.append_response("In")
+                        # print(console_list)
+                    else:
+                        #take the feedback here into an error file
+                        self.append_response("ROBO: "+feedback.feedback())
                 else:
-                    #take the feedback here into an error file
-                    self.append_response("ROBO: "+feedback.feedback())
+                    self.append_response("ROBO: "+"This is a fact")
+                    return robo_response
                 sent_tokens.remove(user_response)
         else:
             self.append_response("ROBO: Bye! take care.. :)"+"\n"+"Hope to serve you better next time!!")
@@ -286,12 +295,14 @@ class ChatbotGUI:
        
     def generate_response(self, user_message):
         robo_response = ''
-        sent_tokens.append(user_message)
+        word_tokens.append(user_message)
         TfidfVec = TfidfVectorizer(tokenizer=self.lem_normalize, stop_words='english')
-        tfidf = TfidfVec.fit_transform(sent_tokens)
-        vals = cosine_similarity(tfidf[-1], tfidf)
-        idx = vals.argsort()[0][-2]
-        flat = vals.flatten()
+        tfidf = TfidfVec.fit_transform(word_tokens)
+        user_input_tfidf = TfidfVec.transform([user_message])
+        user_similarity_scores = cosine_similarity(user_input_tfidf,tfidf)
+        # vals = cosine_similarity(tfidf[-1], tfidf)
+        idx = user_similarity_scores.argsort()[0][-2]
+        flat = user_similarity_scores.flatten()
         flat.sort()
         req_tfidf = flat[-2]
         if req_tfidf == 0:
@@ -299,8 +310,16 @@ class ChatbotGUI:
             self.append_response("ROBO: "+"I am sorry! I don't understand you"+"\n"+"Could you please rephrase")
             return robo_response
         else:
-            robo_response = robo_response + sent_tokens[idx]
-            return robo_response
+            # Set a similarity threshold (adjust this value as needed)
+            threshold = 0.5  # Adjust this threshold as per your requirement
+
+            # if user_similarity_scores[0][idx] >= threshold:
+            for i in range(len(user_similarity_scores[0])):
+                if user_similarity_scores[0][i] >= threshold:
+                    robo_response = robo_response + sent_tokens[idx]
+                else:
+                    robo_response = robo_response + "I am not confident in my response."
+                return robo_response
 
     def append_response(self, response):
         self.response_widget.config(state=tk.NORMAL)
