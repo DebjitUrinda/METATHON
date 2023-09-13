@@ -66,9 +66,9 @@ def Incident(inc_argument,emp_id):
     else:
         return ("Contact Administrator: Check Service Now instance")#response.text
 
-def main():
-    #Incident("vdi is slow","888468")
-    print(Incident("vdi is slow","870840"))
+# def main():
+#     #Incident("vdi is slow","888468")
+#     print(Incident("vdi is slow","870840"))
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

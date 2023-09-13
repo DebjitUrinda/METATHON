@@ -295,9 +295,9 @@ class ChatbotGUI:
        
     def generate_response(self, user_message):
         robo_response = ''
-        word_tokens.append(user_message)
+        sent_tokens.append(user_message)
         TfidfVec = TfidfVectorizer(tokenizer=self.lem_normalize, stop_words='english')
-        tfidf = TfidfVec.fit_transform(word_tokens)
+        tfidf = TfidfVec.fit_transform(sent_tokens)
         user_input_tfidf = TfidfVec.transform([user_message])
         user_similarity_scores = cosine_similarity(user_input_tfidf,tfidf)
         # vals = cosine_similarity(tfidf[-1], tfidf)
@@ -316,7 +316,7 @@ class ChatbotGUI:
             # if user_similarity_scores[0][idx] >= threshold:
             for i in range(len(user_similarity_scores[0])):
                 if user_similarity_scores[0][i] >= threshold:
-                    robo_response = robo_response + word_tokens[idx]
+                    robo_response = robo_response + sent_tokens[idx]
                     break
                 # else:
                 #     robo_response = robo_response + "I am not confident in my response."
