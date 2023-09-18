@@ -1,0 +1,81 @@
+access required for project:RITM.
+access request:RITM.
+access needed for project:RITM.
+access request for project:RITM.
+vdi access:RITM.
+access request for informatica:RITM.
+informatica access:RITM.
+raising access for informatica:RITM.
+informatica access required:RITM.
+access for informatica:RITM.
+informatica needed:RITM.
+access request for data studio:RITM.
+data studio access:RITM.
+raising access for data studio:RITM.
+data studio access required:RITM.
+access for data studio:RITM.
+data studio needed:RITM.
+access request for IBM data studio:RITM.
+IBM data studio access:RITM.
+raising access for IBM data studio:RITM.
+IBM data studio access required:RITM.
+access for IBM data studio:RITM.
+IBM data studio needed:RITM.
+access request for Notepad++:RITM.
+notepad++ access:RITM.
+raising access for notepad++:RITM.
+notepad++ access required:RITM.
+access for notepad++:RITM.
+access request for WinSCP:RITM.
+WinSCP access:RITM.
+raising access for WinSCP:RITM.
+WinSCP access required:RITM.
+access for WinSCP:RITM.
+access request for PuTTY:RITM.
+PuTTY access:RITM.
+raising access for PuTTY:RITM.
+PuTTY access required:RITM.
+access for PuTTY:RITM.
+access request for SQL developer:RITM.
+SQL Developer access:RITM.
+raising access for SQL Developer:RITM.
+SQL Developer access required:RITM.
+access for SQL Developer:RITM.
+access request for Oracle:RITM.
+Oracle access:RITM.
+raising access for Oracle:RITM.
+Oracle access required:RITM.
+access for Oracle:RITM.
+access request for SQL:RITM.
+SQL access:RITM.
+raising access for SQL:RITM.
+SQL access required:RITM.
+access for SQL:RITM.
+vdi not opening:INC.
+vdi not responding:INC.
+vdi is slow:INC.
+vdi is not working:INC.
+application not opening:INC.
+application not responding:INC.
+application is slow:INC.
+application not working:INC.
+Informatica not opening:INC.
+Informatica not responding:INC.
+Informatica is slow:INC.
+Informatica not working:INC.
+WinSCP not opening:INC.
+WinSCP not responding:INC.
+WinSCP is slow:INC.
+WinSCP not working:INC.
+IDQ not opening:INC.
+IDQ not responding:INC.
+IDQ is slow:INC.
+IDQ not working:INC.
+Database not opening:INC.
+Database not responding:INC.
+Database is slow:INC.
+Database is not working:INC.
+Server not accessible:INC.
+Server not responding:INC.
+Login issue:INC.
+Create a change Ticket:CHG.

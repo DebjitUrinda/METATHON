@@ -1,0 +1,69 @@
+RITM:access for datastudio.
+RITM:access for IBM datastudio.
+RITM:access for informatica.
+RITM:access for notepad++.
+RITM:access for Oracle.
+RITM:access for PuTTY.
+RITM:access for SQL Developer.
+RITM:access for SQL.
+RITM:access for WinSCP.
+RITM:access needed for project.
+RITM:access request for IBM datastudio.
+RITM:access request for informatica.
+RITM:access request for Notepad++.
+RITM:access request for Oracle.
+RITM:access request for project.
+RITM:access request for PuTTY.
+RITM:access request for SQL developer.
+RITM:access request for SQL.
+RITM:access request for WinSCP.
+RITM:access request.
+RITM:access required for project.
+INC:application is slow.
+INC:application not opening.
+INC:application not responding.
+INC:application not working.
+CHG:Create a change Ticket.
+INC:Database is not working.
+INC:Database is slow.
+INC:Database not opening.
+INC:Database not responding.
+RITM:IBM datastudio access required.
+RITM:IBM datastudio access.
+RITM:IBM datastudio needed.
+INC:IDQ is slow.
+INC:IDQ not opening.
+INC:IDQ not responding.
+INC:IDQ not working.
+RITM:informatica access.
+INC:Informatica is slow.
+INC:Informatica not opening.
+INC:Informatica not responding.
+INC:Informatica not working.
+INC:Login issue.
+RITM:notepad++ access.
+RITM:Oracle access required.
+RITM:Oracle access.
+RITM:PuTTY access required.
+RITM:PuTTY access.
+RITM:raising access for IBM datastudio.
+RITM:raising access for informatica.
+RITM:raising access for notepad++.
+RITM:raising access for Oracle.
+RITM:raising access for PuTTY.
+RITM:raising access for SQL Developer.
+RITM:raising access for SQL.
+INC:Server not accessible.
+INC:Server not responding.
+RITM:SQL access required.
+RITM:SQL access.
+RITM:SQL Developer access required.
+RITM:SQL Developer access.
+INC:vdi is not working.
+INC:vdi is slow.
+INC:vdi not opening.
+INC:vdi not responding.
+INC:WinSCP is slow.
+INC:WinSCP not opening.
+INC:WinSCP not responding.
+INC:WinSCP not working.
