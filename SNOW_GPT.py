@@ -30,7 +30,7 @@ nltk.download('popular', quiet=True)  # for downloading packages
 
 
 # Reading in the corpus
-df1 = pd.read_excel('C:/Users/888468/Downloads/METATHON-Final_ver_4.0/METATHON-Final_ver_4.0/nlp_input.xlsx',sheet_name='nlp_input')#,header=None)
+df1 = pd.read_excel('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/nlp_input.xlsx',sheet_name='nlp_input')#,header=None)
 
 
 nltk.download('punkt', quiet=True)
@@ -108,7 +108,7 @@ class LoginGUI:
 
     def login(self):
         try:
-            already_data = pd.read_excel('C:/Users/888468/Downloads/METATHON-Final_ver_4.0/METATHON-Final_ver_4.0/login_details.xlsx')
+            already_data = pd.read_excel('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/login_details.xlsx')
         except FileNotFoundError:
             already_data = pd.DataFrame(columns=['Employee_ID', 'Full_Name','Phone_Number', 'E_mail'])
         ID_pattern = r'[0-9]{2,}'
@@ -171,7 +171,7 @@ class LoginGUI_newUser:
 
     def newLogin(self):
         try:
-            login_data = pd.read_excel('C:/Users/888468/Downloads/METATHON-Final_ver_4.0/METATHON-Final_ver_4.0/login_details.xlsx')
+            login_data = pd.read_excel('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/login_details.xlsx')
         except FileNotFoundError:
             login_data = pd.DataFrame(columns=['Employee_ID', 'Full_Name', 'Phone_Number', 'E_mail'])
         ID_pattern = r'[0-9]{2,}'
@@ -191,7 +191,7 @@ class LoginGUI_newUser:
                                                        'Phone_Number': [Phone_Number],
                                                        'E_mail': [E_mail]})
                         login_data = pd.concat([login_data, new_login_data], ignore_index=True)
-                        login_data.to_excel('C:/Users/888468/Downloads/METATHON-Final_ver_4.0/METATHON-Final_ver_4.0/login_details.xlsx', index=False)
+                        login_data.to_excel('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/login_details.xlsx', index=False)
                         messagebox.showinfo("Registration Successful", "New Employee. Welcome!")
                         self.root.destroy()  # Close the login window
                         self.launch_chatbot_gui_new_user()
