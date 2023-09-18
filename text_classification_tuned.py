@@ -10,12 +10,13 @@ from nltk.corpus import stopwords
 import nltk
 import string
 from nltk.stem import WordNetLemmatizer
+import os
 
 nltk.download('punkt')
 nltk.download('wordnet')
 
 # Reading the csv file to re-train the model
-df = pd.read_csv('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/trained_fact_prob.csv',sep='|')
+df = pd.read_csv('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/trained_fact_prob-NEW.csv',sep='|')
 
 # Data Preprocessing
 def preprocess(text):
@@ -71,7 +72,7 @@ best_rf_classifier = RandomForestClassifier(**best_params)
 best_rf_classifier.fit(X_train_tfidf, y_train)
 
 # Saving the trained model to a file
-model_filename = '/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/rf_classifier_model.pkl'
+model_filename = '/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/rf_classifier_model_NEW.pkl'
 joblib.dump(best_rf_classifier, model_filename)
 
 # # Model Evaluation
@@ -84,9 +85,9 @@ joblib.dump(best_rf_classifier, model_filename)
 
 def class_return(user_argument):
     # Reading the dataframe
-    df = pd.read_csv('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/trained_fact_prob.csv',sep='|')
+    df = pd.read_csv('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/trained_fact_prob-NEW.csv',sep='|')
     # Load the trained model from the file
-    loaded_model = joblib.load('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/rf_classifier_model.pkl')
+    loaded_model = joblib.load('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/rf_classifier_model_NEW.pkl')
     # User Input
     # user_input = input("Enter your query: ")
     user_input = user_argument
@@ -105,18 +106,30 @@ def class_return(user_argument):
         df1 = pd.DataFrame(result)
         df1['Processed_Text'] = df1['Text'].apply(preprocess)
         df = df.append(df1, ignore_index=True)
-        df.to_csv('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/trained_fact_prob.csv',sep='|',index=False)
+        df.to_csv('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/trained_fact_prob-NEW.csv',sep='|',index=False)
         return 0
     elif user_prediction[0] == "Problem":
         result = {'Text': [user_input], 'Label':['Problem']}
         df1 = pd.DataFrame(result)
         df1['Processed_Text'] = df1['Text'].apply(preprocess)
         df = df.append(df1, ignore_index=True)
-        df.to_csv('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/trained_fact_prob.csv',sep='|',index=False)
+        df.to_csv('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/trained_fact_prob-NEW.csv',sep='|',index=False)
         return 1
     else:
         print("Model Prediction: Unable to classify.")
 
     
-print(class_return('I am very unhappy as my VDI is not working'))
+print(class_return('Can you help me with my VDI, it is not working'))
 # print(df.tail())
+
+### Remove duplicates from the trained.csv file
+dup_df = pd.read_csv('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/trained_fact_prob-NEW.csv',sep='|')
+dup_df = dup_df.drop_duplicates()
+file_path='/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/trained_fact_prob-NEW.csv'
+if os.path.exists(file_path):
+    print("File exists, Removing File!!")
+    os.remove(file_path)
+    print("File removed, Creating new File!!")
+    dup_df.to_csv('/Users/dbjt_baki/Desktop/Data_Engineering/Metathon/METATHON/trained_fact_prob-NEW.csv',sep='|',index=False)
+else:
+    print("File does not exist")
